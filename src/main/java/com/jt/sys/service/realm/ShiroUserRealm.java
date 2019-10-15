@@ -103,7 +103,7 @@ public class ShiroUserRealm extends AuthorizingRealm {
 		//5.封装权限信息
 		SimpleAuthorizationInfo info=
 		new SimpleAuthorizationInfo();
-		Set<String> perSet=new HashSet<>();
+		Set<String> perSet=new HashSet<String>();
 		for(String per:permissions){
 			if(!StringUtils.isEmpty(per)){
 				perSet.add(per);

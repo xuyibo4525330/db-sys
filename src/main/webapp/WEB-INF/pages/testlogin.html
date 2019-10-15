@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--引入bootstrap 3.3.7-->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- iCheck -->
+    <script src="plugins/iCheck/icheck.min.js"></script>
+</head>
+<body>
+
+<!--登陆盒子-->
+<div class="login-box">
+    <!--logo-->
+    <div>
+        <img src="dist/img/user1-128x128.jpg" class="img-circle" width="80px" height="80px">
+    </div>
+
+    <!--post请求页面-->
+    <div class="login-box-body">
+        <!--消息-->
+        <div class="login-box-msg"><p>登录页面</p></div>
+
+        <!--登录主体部分-->
+        <form role="form" method="post">
+            <!--用户名-->
+            <div class="row">
+                <div class="form-group has-feedback">
+                    <input type="text" id="usernameId" class="form-control" name="username"  placeholder="请输入用户名">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <!--密码-->
+                <div class="form-group has-feedback">
+                    <input type="text" id="passwordId" name="password" class="form-control"placeholder="请输入密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <!--记住密码-->
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <input type="checkbox">记住密码
+                    </div>
+                </div>
+                <!--登陆-->
+                <div class="col-xs-4">
+                    <button type="button" class="btn btn-primary">登陆</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        $("input").iCheck({
+            labelHover : false,
+            cursor : true,
+            checkboxClass : 'icheckbox_square-blue',
+            radioClass : 'iradio_square-blue',
+            increaseArea : '20%'
+        });
+        $(".btn").click(doLogin());
+
+        function doLogin() {
+            //先获取用户名和密码
+            var params = {
+                username:$("#usernameId").val();
+                password:$("#passwordId").val();
+            }
+            //url
+            var url = "user/doLogin.do";
+            $.post(url,params,function (result) {
+                if (result.state==1){
+                    //表示成功跳转到登陆后台(t="+Math.random()可以有效避免缓存)
+                    location.href="doIndexUI.do?t="+Math.random();
+                }else {
+                    $(".login-box-msg").html(result.message);
+                }
+                return false;//防止刷新时重复提交
+            })
+
+        }
+
+    </script>
+
+</div>
+
+</body>
+</html>

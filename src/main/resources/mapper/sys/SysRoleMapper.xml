@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.sys.dao.SysRoleDao">
+   
+   <!-- 获取所有checkbox对象 -->
+   <select id="findObjects"
+           resultType="com.jt.common.vo.CheckBox">
+           select id,name
+           from sys_roles        
+   </select>
+   
+   <!-- 更新角色信息 -->
+   <update id="updateObject"
+           parameterType="com.jt.sys.entity.SysRole">
+       update sys_roles
+       set
+        name=#{name},
+        note=#{note},
+        modifiedTime=now(),
+        modifiedUser=#{modifiedUser}
+       where id=#{id}
+   </update>
+   <resultMap type="com.jt.sys.vo.SysRoleMenuResult"
+              id="roleMenuResult">
+        <!-- 关联映射 -->
+        <association property="role" javaType="com.jt.sys.entity.SysRole">
+           <id property="id" column="id"/>
+           <result property="name" column="name"/>
+           <result property="note" column="note"/>
+        </association>
+        <!-- 尝试自己实现：思考讨论 -->
+        <!-- 自己补充实现 -->
+        <collection property="menuIds"
+                    column="id"
+                    select="com.jt.sys.dao.SysRoleMenuDao.findMenuIdsByRoleId">
+        </collection>
+   </resultMap>
+   <!-- 基于角色id查询角色信息 -->
+   <select id="findObjectById"
+           resultMap="roleMenuResult">
+           select id,name,note
+           from sys_roles
+           where id=#{id}        
+   </select>
+   
+   <!-- 基于角色id查询角色信息 -->
+   <!-- 
+   <select id="findObjectById"
+           resultType="com.jt.sys.entity.SysRoleMenuResult">
+           select *
+           from sys_roles
+           where id=#{id}        
+   </select>
+   -->
+
+   <!--将角色自身信息写入到数据库
+       1)useGeneratedKeys 表示要使用写入到表中的主键值
+       2)keyProperty 表示将写入数据库中的主键值再赋予
+                 参数对象id属性-->
+   <insert id="insertObject"
+           parameterType="com.jt.sys.entity.SysRole"
+           useGeneratedKeys="true"
+           keyProperty="id">
+         insert into sys_roles 
+         (id,name,note,createdTime,modifiedTime,
+         createdUser,modifiedUser) 
+         values
+         (null,#{name},#{note},now(),now(),
+         #{createdUser},#{modifiedUser})
+   </insert>
+
+
+    <!--  
+    MyBatis 最大优势
+    1)JAVA与SQL的分离？提高可维护性
+    2)ORM:RowMap(行映射):反射
+    3)灵活:可以自己写SQL(现对于hibernate)
+    -->
+    <!-- 删除角色自身信息 -->
+    <delete id="deleteObject">
+       delete from sys_roles
+       where id=#{id}
+    </delete>
+   
+    <!-- mybatis中通过sql标签定义SQL共性 -->
+    <sql id="queryWhereId">
+        <where>
+          <if test="name!=null and name!=''">
+           name like concat('%',#{name},'%')
+          </if>
+        </where>
+    </sql>
+    <!-- 分页查询当前页记录 -->
+    <select id="findPageObjects"
+            resultType="com.jt.sys.entity.SysRole">
+            select * 
+            from sys_roles
+            <include refid="queryWhereId"/>
+            order by createdTime desc
+            limit #{startIndex},#{pageSize}
+    </select>
+    <!-- 按条件统计总记录数 -->
+    <select id="getRowCount"
+            resultType="int">
+            select count(*)
+            from sys_roles
+            <include refid="queryWhereId"/>
+    </select>
+</mapper>
+
+
+

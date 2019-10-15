@@ -52,7 +52,7 @@ public class SysLogServiceImpl implements SysLogService {
 		sysLogDao.findPageObjects(username,
 				startIndex, pageSize);
 		//4.对查询结果进行封装
-		PageObject<SysLog> po=new PageObject<>();
+		PageObject<SysLog> po=new PageObject<SysLog>();
 		po.setRecords(records);
 		po.setRowCount(rowCount);
 		po.setPageSize(pageSize);

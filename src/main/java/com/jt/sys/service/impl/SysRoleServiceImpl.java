@@ -137,7 +137,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 		sysRoleDao.findPageObjects(name,
 				startIndex, pageSize);
 		//4.封装结果并返回
-		PageObject<SysRole> po=new PageObject<>();
+		PageObject<SysRole> po=new PageObject<SysRole>();
 		po.setRecords(records);
 		po.setRowCount(rowCount);
 		po.setPageSize(pageSize);

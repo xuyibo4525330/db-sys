@@ -43,7 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
 			List<Integer> roleIds=
 			sysUserRoleDao.findRoleIdsByUserId(userId);
 			//3.数据封装
-			Map<String,Object> map=new HashMap<>();
+			Map<String,Object> map=new HashMap<String,Object>();
 			map.put("user", user);
 			map.put("roleIds", roleIds);
 			return map;
@@ -150,7 +150,7 @@ public class SysUserServiceImpl implements SysUserService {
 			sysUserDao.findPageObjects(
 		username, startIndex, pageSize);
 		//5.封装数据
-		PageObject<SysUserDeptResult> pageObject=new PageObject<>();
+		PageObject<SysUserDeptResult> pageObject=new PageObject<SysUserDeptResult>();
 		pageObject.setPageCurrent(pageCurrent);
 		pageObject.setRowCount(rowCount);
 		pageObject.setPageSize(pageSize);

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.sys.dao.SysUserDao">
+    
+   <!-- 根据用户名查找当前用户对象 -->
+   <select id="findUserByUserName"
+           resultType="com.jt.sys.entity.SysUser">
+      select *
+      from sys_users  
+      where username=#{username}
+   </select>
+    
+    
+    <select id="getUserCountByDeptId"
+            resultType="int">
+          select count(*)
+          from sys_users
+          where deptId=#{deptId}
+    </select>
+    
+    <!-- 更新用户信息 -->
+    <update id="updateObject" parameterType="com.jt.sys.entity.SysUser">
+          update sys_users
+          <!-- 思考：假如不使用动态sql如何对字段进行空值判定 -->
+          <set>
+             <if test="username!=null and username!=''">
+               username=#{username},
+             </if>
+             <if test="email!=null and email!=''">
+               email=#{email},
+             </if>
+             <if test="mobile!=null and mobile!=''">
+               mobile=#{mobile},
+             </if>
+             <if test="deptId!=null and deptId!=''">
+               deptId=#{deptId},
+             </if>
+             <if test="modifiedUser!=null and modifiedUser!=''">
+                modifiedUser=#{modifiedUser},
+             </if>
+             modifiedTime=now()
+          </set>
+          where id=#{id}      
+   </update>
+
+
+  <!-- 基于id获取用户以及对应的部门信息 -->
+  <select id="findObjectById"
+           parameterType="int"
+           resultMap="userDeptResult">
+           select * 
+           from sys_users   
+           where id=#{id}     
+   </select>
+
+   <!-- 保存用户自身信息 -->
+   <insert id="insertObject"
+           parameterType="com.jt.sys.entity.SysUser"
+           useGeneratedKeys="true"
+           keyProperty="id">
+    insert into sys_users
+    (username,password,deptId,email,mobile,salt,valid,
+    createdTime,modifiedTime,createdUser,modifiedUser)
+    values
+    (#{username},#{password},#{deptId},#{email},#{mobile},#{salt},#{valid},
+    now(),now(),#{createdUser},#{modifiedUser})
+   </insert>
+
+
+
+   <!-- 禁用启用用户对象 -->
+   <update id="validById">
+        update sys_users
+        set 
+        valid=#{valid},
+        modifiedUser=#{modifiedUser},
+        modifiedTime=now()
+        where id=#{id}  
+   </update>
+ 
+   <resultMap type="com.jt.sys.vo.SysUserDeptResult"
+              id="userDeptResult">
+          <!-- 直接量类型的属性自动映射 -->
+          <!-- 关联映射 -->
+          <association property="sysDept"
+                       column="deptId"
+                       select="com.jt.sys.dao.SysDeptDao.findById"/>      
+   </resultMap>
+   <select id="findPageObjects"
+           resultMap="userDeptResult">
+         select *
+         from sys_users
+         <include refid="queryWhereId"/>  
+         order by createdTime desc
+         limit #{startIndex},#{pageSize}         
+   </select>
+ 
+   <select id="getRowCount"
+           resultType="int">
+           select count(*)
+           from sys_users
+           <include refid="queryWhereId"/>        
+   </select>
+   
+   <sql id="queryWhereId">
+       <where>
+         <if test="username!=null and username!=''">
+            username like concat("%",#{username},"%")
+         </if>
+       </where>
+   </sql>
+    
+</mapper>
+
+
+
