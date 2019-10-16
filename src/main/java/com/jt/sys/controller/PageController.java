@@ -24,8 +24,9 @@ public class PageController {
 	
 	@RequestMapping("doLoginUI")
 	public String doLoginUI(){
-	   return "login";
+	   return "testlogin";
 	}
+
 }
 
 

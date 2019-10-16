@@ -16,11 +16,12 @@ import com.jt.sys.service.SysUserService;
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
-	
-	@RequestMapping("doUserListUI")
+
+	@RequestMapping("doUserListUI.do")
 	public String doUserListUI(){
-		return "sys/user_list";
+		return "sys/userList";
 	}
+
 	@RequestMapping("doUserEditUI")
 	public String doUserEditUI(){
 		return "sys/user_edit";

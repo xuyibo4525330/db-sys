@@ -21,6 +21,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="dist/css/skins/skin-green.min.css">
   <link rel="stylesheet" href="bower_components/layer/skin/default/layer.css">
   <link rel="stylesheet" href="bower_components/ztree/css/metroStyle/metroStyle.css"/>
   <link rel="stylesheet" href="bower_components/treegrid/jquery.treegrid.css"/>
@@ -55,18 +56,18 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
 
   <!-- Main Header -->
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">动吧</span>
+      <span class="logo-mini">sys系统</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">动吧旅游</span>
+      <span class="logo-lg">sys系统</span>
     </a>
 
     <!-- Header Navbar -->
@@ -258,7 +259,7 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a id="load-dept-id">组织管理</a></li>
+            <li><a id="load-dept-id">部门管理</a></li>
             <li><a id="load-menu-id">菜单管理</a></li>
             <li><a id="load-role-id">角色管理</a></li>
             <li><a id="load-user-id">用户管理</a></li>
@@ -380,6 +381,7 @@ desired effect
   immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -407,6 +409,7 @@ desired effect
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
+
 <script type="text/javascript">
      //说明，在此位置添加js，使用load函数加载页面
     $(function(){
@@ -432,7 +435,7 @@ desired effect
     		//load函数为一个特殊的ajax函数
     	  $("#mainContentId").load(url,function(){
     		  //暂时先加上，后面结合场景讲为什么
-    		  $("#mainContentId").removeData(); 
+    		  $("#mainContentId").removeData();
     	  });
     	});
     }

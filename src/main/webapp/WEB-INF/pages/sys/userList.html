@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-solid box-success">
+            <!--header-->
+            <div class="box-header">
+                <h3 class="box-title">用户管理</h3>
+                <!--显示内容-->
+                <div class="box-tools">
+                    <div class="input-group  input-group-sm" style="width: 350px;">
+                        <input type="text" name="table_search" id="searchNameId" class="form-control  pull-right" placeholder="用户名">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-default" style="margin-right: 10px">添加</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default" style="">修改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--box header-->
+            <div class="box-body table-responsive ">
+                <table class="table table-hover">
+                    <thead class="table-thead">
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>部门</th>
+                            <th>邮箱</th>
+                            <th>手机号</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>修改时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyId"></tbody>
+                </table>
+            </div>
+            <!--底部页码显示-->
+            <div id="pageId" class="box-footer clearfix">
+                The footer of the box
+            </div>
+        </div>
+    </div>
+</div>
+
+
