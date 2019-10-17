@@ -7,33 +7,34 @@
                 <!--显示内容-->
                 <div class="box-tools">
                     <div class="input-group  input-group-sm" style="width: 350px;">
-                        <input type="text" name="table_search" id="searchNameId" class="form-control  pull-right" placeholder="用户名">
+                        <input type="text" name="table_search" id="searchNameId" class="form-control  pull-right"
+                               placeholder="用户名">
                         <div class="input-group-btn">
-                            <button type="button" class="btn btn-default">
+                            <button type="button" class="btn btn-default btn-search">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
-                            <button type="button" class="btn btn-default" style="margin-right: 10px">添加</button>&nbsp;&nbsp;
-                            <button type="button" class="btn btn-default" style="">修改</button>
+                            <button type="button" class="btn btn-default btn-add" style="margin-right: 10px">添加</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default btn-update" style="">修改</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!--box header-->
-            <div class="box-body table-responsive ">
+            <div class="box-body table-responsive">
                 <table class="table table-hover">
                     <thead class="table-thead">
-                        <tr>
-                            <th>ID</th>
-                            <th>用户名</th>
-                            <th>部门</th>
-                            <th>邮箱</th>
-                            <th>手机号</th>
-                            <th>状态</th>
-                            <th>创建时间</th>
-                            <th>修改时间</th>
-                            <th>操作</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>部门</th>
+                        <th>邮箱</th>
+                        <th>手机号</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>修改时间</th>
+                        <th>操作</th>
+                    </tr>
                     </thead>
                     <tbody id="tbodyId"></tbody>
                 </table>
@@ -47,8 +48,86 @@
 </div>
 
 <script type="application/javascript">
-    window.onLoad("doPageUI.do",function () {
+    $(document).ready(function () {
+        $("#pageId").load("doPageUI.do", function () {
+            //去获取数据
+            doGetObjects();
+        });
+        $(".input-group-btn")
+            .on("click", ".btn-search", doQueryObjects)
+            .on("click", ".btn-add", ".btn-update", doLoadEditUI);
+        //启用禁用
+        $("tbody").on("click", ".btn-valid", doValidById);
+    });
 
-    })
+
+    //查询数据
+    function doGetObjects() {
+        debugger
+        var url = "user/doFindPageObjects.do";
+        //给pageId绑定一个值
+        var pageCurrent = $("#pageId").data("pageCurrent");
+        if (!pageCurrent) pageCurrent = 1;
+        //封装参数
+        var params = {"pageCurrent": pageCurrent};
+        //取输入的用户名
+        params.username = $("#searchNameId").val().trim();
+        console.log(params);
+        jQuery.getJSON(url, data, function (result) {
+            if (result.state == 1) {
+                //表示有数据返回  取数据总数据
+                doSetTableBodyRows(result.data.records);
+                //设置页码
+                doSetPagination(result.data)
+            } else {
+                alert(result.message);
+            }
+        })
+    }
+
+    //数据总条数
+    function doSetTableBodyRows(data) {
+        //获取tbody对象,并清空内容
+        var tBody = $("#tbodyId");
+        tbodyId.empty();
+        //迭代data内容追加到tbody中
+        for (var i in data) {
+            var tr = $("<tr></tr>");
+            tr.data("rowData", data[i]);
+            var tds = doCreateTds(data[i]);
+            tr.append(tds);
+            tBody.append(tr);
+        }
+    }
+
+    //创建每行数据
+    function doCreateTds(rows) {
+        debugger
+        console.log(rows);
+        var tbs = "<td><input type='radio' name='radioId' value='" + rows.id + "'></td>" +
+            "<td>" + rows.username + "</td>" +
+            "<td>" + rows.sysDept.name + "</td>" +
+            "<td>" + rows.email + "</td>" +
+            "<td>" + rows.mobile + "</td>" +
+            "<td>"+(rows.valid?"启用":"禁用")+"</td>"+
+            "<td>"+new Date(rows.createdTime).toLocaleString()+"</td>"+
+        ;
+    }
+
+    //基于用户查询
+    function doQueryObjects() {
+
+    }
+
+    //添加修改
+    function doLoadEditUI() {
+
+    }
+
+    //禁用启用
+    function doValidById() {
+
+    }
+
 </script>
 
