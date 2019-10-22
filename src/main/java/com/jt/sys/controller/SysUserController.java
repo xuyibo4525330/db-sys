@@ -1,5 +1,7 @@
 package com.jt.sys.controller;
 
+import com.jt.common.vo.PageObject;
+import com.jt.sys.vo.SysUserDeptResult;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -76,13 +78,20 @@ public class SysUserController {
 		return new JsonResult("update ok");
 	}
 	
+	//@RequestMapping("doFindPageObjects")
+	//@ResponseBody
+	//public JsonResult doFindPageObjects(
+	//		String username,Integer pageCurrent){
+	//	return new JsonResult(
+	//	sysUserService.findPageObjects(
+	//	username, pageCurrent));
+	//}
+
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
-	public JsonResult doFindPageObjects(
-			String username,Integer pageCurrent){
-		return new JsonResult(
-		sysUserService.findPageObjects(
-		username, pageCurrent));
+	public JsonResult doFindPageObjects(String username,Integer pageCurrent){
+		PageObject<SysUserDeptResult> pageObjects = sysUserService.findPageObjects(username, pageCurrent);
+		return new JsonResult(pageObjects);
 	}
 	
 }

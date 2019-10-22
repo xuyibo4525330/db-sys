@@ -95,14 +95,15 @@
          order by createdTime desc
          limit #{startIndex},#{pageSize}         
    </select>
- 
+
+
    <select id="getRowCount"
            resultType="int">
            select count(*)
            from sys_users
-           <include refid="queryWhereId"/>        
+           <include refid="queryWhereId"/>
    </select>
-   
+
    <sql id="queryWhereId">
        <where>
          <if test="username!=null and username!=''">

@@ -63,7 +63,6 @@
 
     //查询数据
     function doGetObjects() {
-        debugger
         var url = "user/doFindPageObjects.do";
         //给pageId绑定一个值
         var pageCurrent = $("#pageId").data("pageCurrent");
@@ -73,11 +72,11 @@
         //取输入的用户名
         params.username = $("#searchNameId").val().trim();
         console.log(params);
-        jQuery.getJSON(url, data, function (result) {
+        $.getJSON(url, params, function (result) {
             if (result.state == 1) {
                 //表示有数据返回  取数据总数据
                 doSetTableBodyRows(result.data.records);
-                //设置页码
+                //设置页码显示数据
                 doSetPagination(result.data)
             } else {
                 alert(result.message);
@@ -85,11 +84,11 @@
         })
     }
 
-    //数据总条数
+    //数据集合
     function doSetTableBodyRows(data) {
         //获取tbody对象,并清空内容
         var tBody = $("#tbodyId");
-        tbodyId.empty();
+        tBody.empty();
         //迭代data内容追加到tbody中
         for (var i in data) {
             var tr = $("<tr></tr>");
@@ -102,21 +101,24 @@
 
     //创建每行数据
     function doCreateTds(rows) {
-        debugger
         console.log(rows);
-        var tbs = "<td><input type='radio' name='radioId' value='" + rows.id + "'></td>" +
+        var tds = "<td><input type='radio' name='radioId' value='" + rows.id + "'></td>" +
             "<td>" + rows.username + "</td>" +
             "<td>" + rows.sysDept.name + "</td>" +
             "<td>" + rows.email + "</td>" +
             "<td>" + rows.mobile + "</td>" +
-            "<td>"+(rows.valid?"启用":"禁用")+"</td>"+
-            "<td>"+new Date(rows.createdTime).toLocaleString()+"</td>"+
+            "<td>" + (rows.valid ? "启用" : "禁用") + "</td>" +
+            "<td>" + new Date(rows.createdTime).toLocaleString() + "</td>" +
+            "<td>" + new Date(rows.modifiedTime).toLocaleString() + "</td>" +
+            "<td><button type='button' class='btn btn-default btn-valid'>" + (rows.valid ? "禁用" : "启用") + "</button></td>"
         ;
+        return tds;
     }
 
-    //基于用户查询
+    //基于用户查询按钮
     function doQueryObjects() {
-
+        $("#pageId").data("pageCurrent", 1);
+        doGetObjects();
     }
 
     //添加修改
@@ -126,7 +128,8 @@
 
     //禁用启用
     function doValidById() {
-
+        var rowData = $(this).parents("tr").data("rowData");
+        console.log(rowData);
     }
 
 </script>

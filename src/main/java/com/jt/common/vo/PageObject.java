@@ -1,11 +1,16 @@
 package com.jt.common.vo;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.io.Serializable;
 import java.util.List;
 /**
  * 业务层值对象，负责封装业务层数据
  * @param <T>
  */
+@Accessors(chain = true)
+@Data
 public class PageObject<T> implements Serializable{//类泛型
 	private static final long serialVersionUID = 3361603153415782373L;
 	/**当前页的记录信息*/
