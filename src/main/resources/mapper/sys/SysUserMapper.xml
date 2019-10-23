@@ -85,7 +85,7 @@
           <!-- 关联映射 -->
           <association property="sysDept"
                        column="deptId"
-                       select="com.jt.sys.dao.SysDeptDao.findById"/>      
+                       select="com.jt.sys.dao.SysDeptDao.findById"/>
    </resultMap>
    <select id="findPageObjects"
            resultMap="userDeptResult">

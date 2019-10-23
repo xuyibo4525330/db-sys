@@ -73,24 +73,16 @@ public class SysUserController {
 	@ResponseBody
 	public JsonResult doValidById(Integer id,
 			Integer valid){
-		sysUserService.validById(id, valid,
-				"admin");
+		sysUserService.validById(id, valid,"admin");
 		return new JsonResult("update ok");
 	}
 	
-	//@RequestMapping("doFindPageObjects")
-	//@ResponseBody
-	//public JsonResult doFindPageObjects(
-	//		String username,Integer pageCurrent){
-	//	return new JsonResult(
-	//	sysUserService.findPageObjects(
-	//	username, pageCurrent));
-	//}
+
 
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
-	public JsonResult doFindPageObjects(String username,Integer pageCurrent){
-		PageObject<SysUserDeptResult> pageObjects = sysUserService.findPageObjects(username, pageCurrent);
+	public JsonResult doFindPageObjects(String username,String dept,Integer pageCurrent){
+		PageObject<SysUserDeptResult> pageObjects = sysUserService.findPageObjects(username,dept, pageCurrent);
 		return new JsonResult(pageObjects);
 	}
 	

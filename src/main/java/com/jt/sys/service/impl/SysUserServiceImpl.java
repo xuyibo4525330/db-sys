@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.jt.sys.dao.SysDeptDao;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
+
+    @Autowired
+    private SysDeptDao sysDeptDao;
 
     @Override
     public Map<String, Object> findObjectById(
@@ -114,7 +118,7 @@ public class SysUserServiceImpl implements SysUserService {
     //user-->admin-->{"sys:user:valid","sys:user:update"}
     //此注解由shiro定义
     //借助此注解定义访问此方法需要什么权限
-    @RequiresPermissions("sys:user:valid")
+    //@RequiresPermissions("sys:user:valid")
     //当方法上有如上注解时系统底层会为业务对象产生一个代理对象
     //并要对此代理对象进行生命周期管理。
     //当执行此方法时，系统底层会通过代理对象，
@@ -122,6 +126,7 @@ public class SysUserServiceImpl implements SysUserService {
     //此时subject会将权限系统提交给SecuityManager对象
     //SecuityManager会将权限信息交给授权管理器
     //授权管理器会调用realm方法查询用户权限
+    @RequiresPermissions("sys:user:valid")
     @Override
     public int validById(Integer id,
                          Integer valid,
@@ -146,7 +151,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public PageObject<SysUserDeptResult> findPageObjects(String username,
+    public PageObject<SysUserDeptResult> findPageObjects(String username,String dept,
                                                          Integer pageCurrent) {
         //1.数据合法性验证
         if (pageCurrent == null || pageCurrent <= 0) {
@@ -160,6 +165,8 @@ public class SysUserServiceImpl implements SysUserService {
         //3.计算startIndex的值
         int pageSize = 3;
         int startIndex = (pageCurrent - 1) * pageSize;
+        //基于部门名称查找数据(未完成)
+        //int deptId = sysDeptDao.selectByName(dept);
         //4.依据条件获取当前页数据
         List<SysUserDeptResult> records =
                 sysUserDao.findPageObjects(

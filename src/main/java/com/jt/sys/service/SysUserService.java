@@ -25,5 +25,6 @@ public interface SysUserService {
 	
 	PageObject<SysUserDeptResult> findPageObjects(
 			String username,
+			String dept,
 			Integer pageCurrent);
 }

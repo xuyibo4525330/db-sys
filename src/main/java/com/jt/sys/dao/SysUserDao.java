@@ -59,6 +59,7 @@ public interface SysUserDao {
 			@Param("username") String username,
 			@Param("startIndex")Integer startIndex,
 			@Param("pageSize")Integer pageSize);
+
 	/**依据条件统计记录总数*/
 	int getRowCount(@Param("username") String username);
 

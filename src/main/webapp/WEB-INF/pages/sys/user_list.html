@@ -56,24 +56,7 @@
 	   $("tbody").on("click",".btn-valid",doValidById);
    });
    
-   function doLoadEditUI(){
-	   //1.判定点击的对象
-	   var title;
-	   if($(this).hasClass("btn-add")){
-		   title="添加用户";
-		   doLoadPage(title);
-	   }else if($(this).hasClass("btn-update")){
-		   title="修改用户";
-		   var id=doGetCheckedId();
-		   console.log("id="+id)
-		   if(!id){
-			  alert("请先选择");
-			  return;
-		   }
-		   //基于id进行查询并加载编辑页面
-		   doFindObjectById(id,title);
-	   }
-   }
+
    function doFindObjectById(id,title){
 	   //1.params
 	   var params={"id":id};
@@ -89,7 +72,26 @@
 		   }
 	   });
    }
-   
+
+   function doLoadEditUI(){
+	   //1.判定点击的对象
+	   var title;
+	   if($(this).hasClass("btn-add")){
+		   title="添加用户";
+		   doLoadPage(title);
+	   }else if($(this).hasClass("btn-update")){
+		   title="修改用户";
+		   var id=doGetCheckedId();
+		   console.log("id="+id)
+		   if(!id){
+			   alert("请先选择");
+			   return;
+		   }
+		   //基于id进行查询并加载编辑页面
+		   doFindObjectById(id,title);
+	   }
+   }
+
    function doGetCheckedId(){
 	 return $("tbody input[name='radioId']:checked").val();
    }

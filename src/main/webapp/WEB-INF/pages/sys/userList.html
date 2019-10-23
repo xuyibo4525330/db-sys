@@ -6,9 +6,15 @@
                 <h3 class="box-title">用户管理</h3>
                 <!--显示内容-->
                 <div class="box-tools">
-                    <div class="input-group  input-group-sm" style="width: 350px;">
-                        <input type="text" name="table_search" id="searchNameId" class="form-control  pull-right"
-                               placeholder="用户名">
+                    <div class="input-group  input-group-sm" style="width: 600px; ">
+                        <form class="form-inline" role="form">
+                            <div  class="form-group">
+                                <input type="text" name="table_search" id="searchDept" class="form-control" style="width: 48%"
+                                     placeholder="部门">
+                                 <input type="text" name="table_search" id="searchNameId" class="form-control  pull-right" style="width: 48%"
+                                    placeholder="用户名">
+                            </div>
+                        </form>
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default btn-search">
                                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -55,7 +61,7 @@
         });
         $(".input-group-btn")
             .on("click", ".btn-search", doQueryObjects)
-            .on("click", ".btn-add", ".btn-update", doLoadEditUI);
+            .on("click",".btn-add,.btn-update",doLoadEditUI);
         //启用禁用
         $("tbody").on("click", ".btn-valid", doValidById);
     });
@@ -123,13 +129,84 @@
 
     //添加修改
     function doLoadEditUI() {
-
+        debugger
+        //判断点击的对象
+        var title;
+        if ($(this).hasClass("btn-add")){
+            title="添加用户";
+            doLoadPage(title);
+        }else if ($(this).hasClass("btn-update")){
+            title="修改用户";
+            //获取选择的用户
+            var id = doGetCheckedId();
+            console.log(id)
+            if (!id){
+                alert("请先选择要修改的用户");
+                return;
+            }
+            //基于id进行查询并加载编辑页面
+            doFindObjectById(id,title);
+        }
     }
 
+    function doFindObjectById(id,title) {
+        //1.params
+        var params = {"id":id};
+        //2.url
+        var url = "user/doFindObjectById.do";
+        //3.ajax
+        $.getJSON(url,params,function (result) {
+            if (result.state==1){
+                $("#mainContentId").data("rowData",result.data);
+                doLoadPage(title);
+            }
+        })
+    }
+
+    //去跳转修改页面
+    function doLoadPage(title) {
+        var url = "user/doUserEditUI.do";
+        $("#mainContentId").load(url,function () {
+            $(".box-title").html(title);
+        })
+    }
+
+    function doGetCheckedId() {
+        return $("tbody input[name='radioId']:checked").val();
+    }
+    
     //禁用启用
     function doValidById() {
         var rowData = $(this).parents("tr").data("rowData");
         console.log(rowData);
+        var id = rowData.id;
+        var newValid = rowData.valid?0:1;
+        var params = {"id":id,"valid":newValid};
+        //url
+        var url = "user/doValidById.do";
+        var btn = $(this);
+        $.post(url,params,function (result) {
+            if (result.state==1){
+                alert(result.state)
+                //重新查询一次
+                // doGetObjects();//此方式为全局更新加载不好
+                doEditRow(btn,rowData.valid);
+            }
+        })
+    }
+
+    //更新禁用状态
+    function doEditRow(btn,valid) {
+        console.log(valid)
+        //1修改按钮上的内容
+        $(btn).html(valid?"启用":"禁用");
+        //2.修改列表上的状态信息
+        var tr = $(btn).parents("tr");
+        tr.find("td:eq(5)").text(valid?"禁用":"启用");
+        //3.获取当前行tr对象，然后重新绑定新的值
+        var rowData = tr.data("rowData");
+        rowData.valid = valid?0:1;
+        tr.data("rowData",rowData);
     }
 
 </script>

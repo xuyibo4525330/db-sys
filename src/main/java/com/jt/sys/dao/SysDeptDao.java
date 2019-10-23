@@ -11,4 +11,5 @@ public interface SysDeptDao {
 	List<Map<String,Object>> findObjects();
 	int getChildCount(Integer id);
 	int deleteObject(Integer id);
+	int selectByName(String dept);
 }
