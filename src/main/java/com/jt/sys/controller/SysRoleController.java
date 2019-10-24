@@ -23,10 +23,16 @@ public class SysRoleController {
 		return "sys/role_edit";
 	}
 	
+	//@RequestMapping("doFindRoles")
+	//@ResponseBody
+	//public JsonResult doFindObjects(){
+	// return new JsonResult(sysRoleService.findObjects());
+	//}
+
 	@RequestMapping("doFindRoles")
 	@ResponseBody
-	public JsonResult doFindObjects(){
-	 return new JsonResult(sysRoleService.findObjects());
+	public JsonResult doFindRoles(){
+		return new JsonResult(sysRoleService.findObjects());
 	}
 
 	@RequestMapping("doFindObjectById")

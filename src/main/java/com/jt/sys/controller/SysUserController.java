@@ -26,7 +26,7 @@ public class SysUserController {
 
 	@RequestMapping("doUserEditUI")
 	public String doUserEditUI(){
-		return "sys/user_edit";
+		return "sys/userEdit";
 	}
 	@RequestMapping("doLogin")
 	@ResponseBody

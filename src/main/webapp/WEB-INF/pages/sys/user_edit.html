@@ -6,7 +6,7 @@
       <!-- /.box-header -->
       <!-- form start -->
       <form class="form-horizontal">
-        <div class="box-body">
+        <div class="box-body" style="margin-left: 10px">
           <div class="form-group">
             <label for="usernameId" class="col-sm-2 control-label">用户名</label>
             <div class="col-sm-10">
@@ -206,13 +206,13 @@ function doInitPageRoles(data){
 	 var div=$("#rolesId");
 	 div.empty();
 	 //2.迭代数据，将数据追加到div
-	 var input="<input type='checkbox' name='roleId' value='[id]'>[name]"
+	 var input="<input type='checkbox' name='roleId' value='[id]'>[name]";
 	 for(var i in data){
 		 //记住每次replace时都会产生一个新的字符串对象
 		 var newInput=
 		 input.replace("[id]",data[i].id)
 		 .replace("[name]",data[i].name);
-		 div.append(newInput)
+		 div.append(newInput);
 	 }
  }
 </script>
