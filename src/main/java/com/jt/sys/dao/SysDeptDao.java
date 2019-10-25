@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.jt.common.vo.Node;
 import com.jt.sys.entity.SysDept;
+import org.apache.ibatis.annotations.Param;
+
 public interface SysDeptDao {
 	int updateObject(SysDept entity);
 	int insertObject(SysDept entity);
@@ -11,5 +13,5 @@ public interface SysDeptDao {
 	List<Map<String,Object>> findObjects();
 	int getChildCount(Integer id);
 	int deleteObject(Integer id);
-	int selectByName(String dept);
+	List<Map<String,Object>> selectByName(@Param("dept") String dept);
 }

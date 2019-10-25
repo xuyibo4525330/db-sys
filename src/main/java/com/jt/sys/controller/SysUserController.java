@@ -51,15 +51,14 @@ public class SysUserController {
 	    sysUserService.findObjectById(id));
 	}
 	
+
 	@RequestMapping("doUpdateObject")
 	@ResponseBody
-	public JsonResult doUpdateObject(
-			SysUser entity,
-			Integer ...roleIds){
-		sysUserService.updateObject(entity,roleIds);
-		return new JsonResult("update ok");
+	public JsonResult doUpdateObject(SysUser user,Integer ...roleIds){
+		int rows = sysUserService.updateObject(user, roleIds);
+		return new JsonResult("成功修改"+rows+"个用户");
 	}
-	
+
 	@RequestMapping("doSaveObject")
 	@ResponseBody
 	public JsonResult doSaveObject(

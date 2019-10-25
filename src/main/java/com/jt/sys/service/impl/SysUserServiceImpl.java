@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.jt.sys.dao.SysDeptDao;
+import com.jt.sys.entity.SysDept;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,8 @@ public class SysUserServiceImpl implements SysUserService {
         return map;
     }
 
+
+
     @Override
     public int updateObject(SysUser entity,
                             Integer... roleIds) {
@@ -64,6 +67,12 @@ public class SysUserServiceImpl implements SysUserService {
         }
         if (StringUtils.isEmpty(entity.getUsername())) {
             throw new IllegalArgumentException("用户名不能为空");
+        }
+        if (StringUtils.isEmpty(entity.getEmail())){
+            throw new IllegalArgumentException("邮箱不能为空");
+        }
+        if (StringUtils.isEmpty(entity.getMobile())){
+            throw new IllegalArgumentException("手机不能为空");
         }
         //...
         //2.保存用户自身信息
@@ -151,7 +160,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public PageObject<SysUserDeptResult> findPageObjects(String username,String dept,
+    public PageObject<SysUserDeptResult> findPageObjects(String username,String deptName,
                                                          Integer pageCurrent) {
         //1.数据合法性验证
         if (pageCurrent == null || pageCurrent <= 0) {
@@ -166,7 +175,7 @@ public class SysUserServiceImpl implements SysUserService {
         int pageSize = 3;
         int startIndex = (pageCurrent - 1) * pageSize;
         //基于部门名称查找数据(未完成)
-        //int deptId = sysDeptDao.selectByName(dept);
+        List<Map<String,Object>> sysDepts = sysDeptDao.selectByName(deptName);
         //4.依据条件获取当前页数据
         List<SysUserDeptResult> records =
                 sysUserDao.findPageObjects(

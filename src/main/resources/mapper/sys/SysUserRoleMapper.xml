@@ -40,9 +40,9 @@
                   尽量不要是用户输入 的值-->
     <delete id="deleteObjectsById">
         delete from sys_user_roles
-        where ${columnName}=#{columnValue}
+        where #{columnName}=#{columnValue}
     </delete>
-    
+
 </mapper>
 
 

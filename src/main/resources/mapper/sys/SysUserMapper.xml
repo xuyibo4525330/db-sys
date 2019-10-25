@@ -68,7 +68,6 @@
    </insert>
 
 
-
    <!-- 禁用启用用户对象 -->
    <update id="validById">
         update sys_users

@@ -63,8 +63,7 @@
                 <ul id="zTreeId" class="ztree"></ul>    <!-- 动态加载树 -->
             </div>
         </div>
-        <span class="layui-layer-setwin"> <a
-                class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel"></a></span>
+        <span class="layui-layer-setwin"> <a class="layui-layer-ico layui-layer-close layui-layer-close1 btn-cancel" ></a></span>
         <div class="layui-layer-btn layui-layer-btn-">
             <a class="layui-layer-btn0 btn-confirm">确定</a>
             <a class="layui-layer-btn1 btn-cancel">取消</a>
@@ -78,12 +77,12 @@
     var zTree;
     //初始化zTree时会用到
     var setting = {
-        data : {
-            simpleData : {
-                enable : true,
-                idKey : "id",  //节点数据中保存唯一标识的属性名称
-                pIdKey : "parentId",  //节点数据中保存其父节点唯一标识的属性名称
-                rootPId : null  //根节点id
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",  //节点数据中保存唯一标识的属性名称
+                pIdKey: "parentId",  //节点数据中保存其父节点唯一标识的属性名称
+                rootPId: null  //根节点id
             }//json 格式javascript对象
         }
     }//json 格式的javascript对象
@@ -91,55 +90,105 @@
     $(document).ready(function () {
         doLoadRoles();
         //取消按钮
-        $(".btn-cancel").html("取消");
+        $(".btn-cancel:eq(0)").html("取消");
+        $(".btn-save").html("提交");
         $(".box-footer")
-            .on("click",".btn-cancel",doCancel)
-            .on("click",".btn-save",doSaveOrUpdate);
+            .on("click", ".btn-cancel", doCancel)
+            .on("click", ".btn-save", doSaveOrUpdate);
 
         //绑定点击部门加载树功能
         $(".form-horizontal")
-            .on("click",".load-sys-dept",doLoadZTreeNodes);
+            .on("click", ".load-sys-dept", doLoadZTreeNodes);
 
         //给树加功能
         $("#treeLayer")
-            .on("click",".btn-cancel",doHideTree)
-            .on("click",".btn-confirm",doConfirm);
+            .on("click", ".btn-cancel", doHideTree)
+            .on("click", ".btn-confirm", doConfirm);
     })
-    
+
     //树修改部门完点击确定功能
     function doConfirm() {
-        //获取所有选中的记录id，name
+        //1.获取所有选中的记录id，name
         var selectedNodes = zTree.getSelectedNodes();
-        //这里模拟的是只有一个
+        //2.这里模拟的是只有一个
         var node = selectedNodes[0];
-        //将node里的id，name绑定到具体对象上
-
+        //3.将node里的id，name绑定到具体对象上
+        $("#deptId").data("deptId", node.id);
+        console.log("id=" + node.id)
+        $("#deptId").val(node.name);
+        //4.隐藏zTree
+        doHideTree();
     }
-    
+
+    //隐藏zTree
+    function doHideTree() {
+        $("#treeLayer").css("display", "none");
+    }
+
     //存修改完的用户信息
     function doSaveOrUpdate() {
-        
-    }
-    
-    //树形结构取消
-    function doHideTree() {
-        $("#treeLayer").css("display","none");
-    }
-
-    //绑定点击部门加载树功能
-    function doLoadZTreeNodes() {
-        $("#treeLayer").css("display","block");
-        var url="dept/doFindZTreeNodes.do";
-        $.getJSON(url,function (result) {
+        debugger
+        //1.获取页面上的数据
+        var data = $("#mainContentId").data("rowData");
+        console.log("data" + data);
+        var params = doGetEditFormData();
+        if (data)params.id=data.user.id;
+        //2.添加和修改的url
+        var insertUrl = "user/doSaveObject.do";
+        var updateUrl = "user/doUpdateObject.do";
+        //判断是那个url
+        var url = data ? updateUrl : insertUrl;
+        $.post(url,params,function(result) {
             if (result.state==1){
-                console.log(result.data);
-                zTree = $.fn.zTree.init($("#zTreeId"),setting,result.data);
+                alert(result.message);
+                doCancel();
             }else {
                 alert(result.message);
             }
         })
     }
-    
+
+    //获取页面中的数据
+    function doGetEditFormData() {
+        //获取用户输入的值
+        var params = {
+            username: $("#usernameId").val(),
+            password: $("#passwordId").val(),
+            email: $("#emailId").val(),
+            mobile: $("#phoneId").val(),
+            deptId: $("#deptId").data("deptId")
+        }
+        //获取选择的角色
+        var roleIds = new Array();
+        $("#rolesId input[name='roleId']")
+            .each(function () {
+                if ($(this).prop("checked")) {
+                    roleIds.push($(this).val());
+                }
+            });
+        params.roleIds = roleIds.toString();
+        return params;
+    }
+
+    //树形结构取消
+    function doHideTree() {
+        $("#treeLayer").css("display", "none");
+    }
+
+    //绑定点击部门加载树功能
+    function doLoadZTreeNodes() {
+        $("#treeLayer").css("display", "block");
+        var url = "dept/doFindZTreeNodes.do";
+        $.getJSON(url, function (result) {
+            if (result.state == 1) {
+                console.log(result.data);
+                zTree = $.fn.zTree.init($("#zTreeId"), setting, result.data);
+            } else {
+                alert(result.message);
+            }
+        })
+    }
+
     //取消功能
     function doCancel() {
         //释放数据
@@ -147,7 +196,7 @@
         //加载到查询用户页面
         $("#mainContentId").load("user/doUserListUI.do");
     }
-    
+
     function doLoadRoles() {
         var url = "role/doFindRoles.do";
         $.getJSON(url, function (result) {
@@ -157,7 +206,7 @@
                 console.log(result.data)
                 //初始化修改页面数据同步
                 doInitFormData();
-            }else {
+            } else {
                 alert(result.message);
             }
         })
@@ -167,7 +216,7 @@
     function doInitFormData() {
         //拿数据
         var rowData = $("#mainContentId").data("rowData");
-        if (!rowData)return;
+        if (!rowData) return;
         //移出密码框
         $("#pwdDiv").remove();
         console.log(rowData);
@@ -175,13 +224,13 @@
         $("#usernameId").val(rowData.user.username);
         $("#deptId").val(rowData.user.sysDept.name);
         //给部门绑定Id方便后续查找
-        $("#deptId").data("deptId",rowData.user.sysDept.id)
+        $("#deptId").data("deptId", rowData.user.sysDept.id)
         $("#emailId").val(rowData.user.email);
         $("#phoneId").val(rowData.user.mobile);
         //初始化用户角色信息
         var ids = rowData.roleIds;
-        for (var i in ids){
-            $("#rolesId input[value='"+ids[i]+"']").prop("checked",true);
+        for (var i in ids) {
+            $("#rolesId input[value='" + ids[i] + "']").prop("checked", true);
         }
     }
 
