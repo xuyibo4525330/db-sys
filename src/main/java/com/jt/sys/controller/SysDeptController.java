@@ -18,7 +18,7 @@ public class SysDeptController {
 	
 	@RequestMapping("doDeptListUI")
 	public String doDeptListUI(){
-		return "sys/dept_list";
+		return "sys/deptList";
 	}
 	@RequestMapping("doDeptEditUI")
 	public String doDeptEditUI(){
