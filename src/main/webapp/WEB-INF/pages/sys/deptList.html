@@ -35,11 +35,19 @@
         },
         {
             title: '上级机构',
-            field: 'parentName',
+            field: 'createdTime',
             align: 'center',
             valign: 'middle',
             sortable: true,
             width: '100px'
+        },
+        {
+            title: '创建时间',
+            field: 'sort',
+            align: 'center',
+            valign: 'middle',
+            sortable: true,
+            width: '70px'
         },
         {
             title: '排序号',
@@ -69,15 +77,37 @@
         treeTable.setExpandColumn(2);
         treeTable.init();
     }
-    
+
+    //删除
     function doDeleteObject() {
+        //1.url
+        var url = "dept/doDeleteObject.do";
+        //2.params
+        var id = doGetCheckedId();
+        if(!id){
+            alert("请先选择一条记录");
+            return;
+        }
+        var params = {"id":id};
+        //3.post
+        $.post(url,params,function (result) {
+            if (result.stat==1){
+                alert(result.message);
+                doGetObjects();
+            } else{
+                alert(result.message);
+            }
+        })
+    }
+
+    //获取选中的ID
+    function doGetCheckedId() {
         //获取选中的记录对象
         var selections = $("#gridTreeTable").bootstrapTreeTable("getSelections");
         //判断是否有选中的
         if (selections.length>0){
-
+            return selections[0].id;
         }
-
     }
     
 </script>
@@ -99,10 +129,10 @@
                 </div><!-- /.box-tools -->
             </div><!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-                <table id="gridTreeTable" class="table table-hover">
+                <table id="gridTreeTable" class="table table-hover" style="text-align: center">
                     <thead>
                     <tr>
-                        <th data-field="selectItem" data-checkbox="true"></th>
+                        <th data-field="selectItem" data-checkbox="true" ></th>
                     </tr>
                     </thead>
                 </table>

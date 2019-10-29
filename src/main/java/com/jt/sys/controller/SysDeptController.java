@@ -49,8 +49,8 @@ public class SysDeptController {
 	@RequestMapping("doDeleteObject")
 	@ResponseBody
 	public JsonResult doDeleteObject(Integer id){
-		sysDeptService.deleteObject(id);
-		return new JsonResult("delete ok");
+		int i = sysDeptService.deleteObject(id);
+		return new JsonResult("删除"+i+"条记录");
 	}
 	
 	@RequestMapping("doFindObjects")
