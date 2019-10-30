@@ -22,7 +22,7 @@ public class SysDeptController {
 	}
 	@RequestMapping("doDeptEditUI")
 	public String doDeptEditUI(){
-		return "sys/dept_edit";
+		return "sys/deptEdit";
 	}
 	
 	@RequestMapping("doUpdateObject")
@@ -39,13 +39,19 @@ public class SysDeptController {
 		return new JsonResult("save ok");
 	}
 	
+	//@RequestMapping("doFindZTreeNodes")
+	//@ResponseBody
+	//public JsonResult doFindZTreeNodes(){
+	//	return new JsonResult(
+	//	sysDeptService.findZTreeNodes());
+	//}
+
 	@RequestMapping("doFindZTreeNodes")
 	@ResponseBody
 	public JsonResult doFindZTreeNodes(){
-		return new JsonResult(
-		sysDeptService.findZTreeNodes());
+		return new JsonResult(sysDeptService.findZTreeNodes());
 	}
-	
+
 	@RequestMapping("doDeleteObject")
 	@ResponseBody
 	public JsonResult doDeleteObject(Integer id){

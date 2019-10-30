@@ -34,22 +34,13 @@
             width: '130px'
         },
         {
-            title: '上级机构',
-            field: 'createdTime',
+            title: '上级部门',
+            field: 'parentName',
             align: 'center',
             valign: 'middle',
             sortable: true,
             width: '100px'
-        },
-        {
-            title: '创建时间',
-            field: 'sort',
-            align: 'center',
-            valign: 'middle',
-            sortable: true,
-            width: '70px'
-        },
-        {
+        },{
             title: '排序号',
             field: 'sort',
             align: 'center',
@@ -63,9 +54,38 @@
         doGetObjects();
         $(".input-group-btn")
             .on("click", ".btn-delete", doDeleteObject)
-            .on("click", ".btn-update", doLoadEditUI);
+            .on("click", ".btn-add,.btn-update", doLoadEditUI);
     })
     
+    function doLoadEditUI() {
+        var title;
+        if ($(this).hasClass("btn-add")){
+            title = "添加部门";
+        } else if ($(this).hasClass("btn-update")){
+            title = "修改部门";
+            //获取选中的记录数据
+            var rowData = doGetCheckedItem();
+            console.log(rowData);
+            if (!rowData){
+                alert("清选择一个修改");
+                return;
+            }
+            //获取数据绑定到显示页面
+            $("#mainContentId").data("rowData",rowData);
+        }
+        var url = "dept/doDeptEditUI.do";
+        $("#mainContentId").load(url,function () {
+            $(".box-title").html(title);
+        })
+    }
+    
+    //获取选中当前行的数据
+    function doGetCheckedItem() {
+        //获取tr对象
+        var tr = $("tbody input[type='radio']:checked").parents("tr");
+        var rowData = tr.data("rowData");
+        return rowData;
+    }
     
     //初始化加载页面
     function doGetObjects() {
@@ -93,11 +113,12 @@
         $.post(url,params,function (result) {
             if (result.stat==1){
                 alert(result.message);
-                doGetObjects();
             } else{
                 alert(result.message);
             }
+            doGetObjects();
         })
+
     }
 
     //获取选中的ID

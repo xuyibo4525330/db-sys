@@ -59,7 +59,7 @@
   <script type="text/javascript" src="bower_components/layer/layer.js">
   </script>
  <script type="text/javascript">
-  var zTree; 
+  var zTree;
   //初始化zTree时会用到
   var setting = {
   	data : {
@@ -71,16 +71,16 @@
   		}//json 格式javascript对象
   	}
   }//json 格式的javascript对象
-  
+
   $(function(){
 	  $(".form-horizontal")
 	  .on("click",".load-sys-dept",doLoadZtreeNodes)
 
-	  
+
 	  $(".box-footer")
 	  .on("click",".btn-cancel",doCancel)
 	  .on("click",".btn-save",doSaveOrUpdate);
-	  
+
 	  $("#treeLayer")
       .on("click",".btn-confirm",doSetSelectNode)
       .on("click",".btn-cancel",doHideTree)
@@ -106,7 +106,7 @@
 				$("#parentId").removeData();
 			})
 		}
-		
+
 		function doSaveOrUpdate() {
 			//1.获取表单数据
 			var params = doGetEditFormData();
